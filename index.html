@@ -1,0 +1,63 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Simple AR Experience</title>\
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>\
+    <script src="https://cdn.jsdelivr.net/npm/@webxr-polyfill/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>\
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/jsm/webxr/ARButton.js"></script>\
+</head>\
+<body style="margin: 0; overflow: hidden;">\
+    <script>\
+        const polyfill = new WebXRPolyfill();\
+        \
+        let scene, camera, renderer;\
+        let cube;\
+        \
+        function init() \{\
+            renderer = new THREE.WebGLRenderer(\{ antialias: true, alpha: true \});\
+            renderer.setSize(window.innerWidth, window.innerHeight);\
+            renderer.xr.enabled = true;\
+            document.body.appendChild(renderer.domElement);\
+            \
+            document.body.appendChild(THREE.ARButton.createButton(renderer));\
+            \
+            scene = new THREE.Scene();\
+            \
+            camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 100);\
+            \
+            const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);\
+            scene.add(light);\
+            \
+            const geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);\
+            const material = new THREE.MeshStandardMaterial(\{ color: 0xff0000 \});\
+            cube = new THREE.Mesh(geometry, material);\
+            cube.position.set(0, 0, -0.5);\
+            scene.add(cube);\
+        \}\
+        \
+        function animate() \{\
+            renderer.setAnimationLoop(() => \{\
+                cube.rotation.y += 0.01;\
+                renderer.render(scene, camera);\
+            \});\
+        \}\
+        \
+        window.addEventListener('click', () => \{\
+            cube.material.color.setHex(Math.random() * 0xffffff);\
+        \});\
+        \
+        init();\
+        animate();\
+    </script>\
+</body>\
+</html>\
+}
